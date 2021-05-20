@@ -15,13 +15,13 @@ object TelegramBotUtils : Loggable {
     private fun makeRequest(
         request: Request,
     ): Response? {
-        log.debug("Start send message via telegram bot...")
+        log.info("Start send message via telegram bot...")
         return try {
             WebClientUtils.makeRequest(request)
         } catch (ex: Exception) {
             ex.printStackTrace()
             log.error("Telegram make request error {}", ex.message)
-            null
+            throw TelegramSendException(ex)
         }
     }
 
@@ -49,7 +49,7 @@ object TelegramBotUtils : Loggable {
             .build()
 
         val result = makeRequest(request)
-        log.debug("Telegram complete sent message to {}", chatId)
+        log.info("Telegram complete sent message to {}", chatId)
         return result
     }
 
@@ -95,7 +95,7 @@ object TelegramBotUtils : Loggable {
             .build()
 
         val result = makeRequest(request)
-        log.debug("Telegram complete sent message to {}", chatId)
+        log.info("Telegram complete sent message to {}", chatId)
         return result
     }
 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.cubetiqs"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
@@ -14,17 +14,17 @@ repositories {
 }
 
 dependencies {
-	implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-
-	implementation("com.squareup.okhttp3:okhttp:4.9.0")
-
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-	// logback driver and slf4j logging
-	implementation("ch.qos.logback:logback-core:1.3.0-alpha5")
-	implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
+	// http client
+	implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
+	// logback driver and slf4j logging
+	implementation("org.slf4j:slf4j-api:1.7.30")
+	implementation("org.slf4j:slf4j-simple:1.7.30")
+
+	// test framework
 	testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
 }
 

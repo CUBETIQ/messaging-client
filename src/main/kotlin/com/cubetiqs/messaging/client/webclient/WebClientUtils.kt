@@ -1,6 +1,7 @@
 package com.cubetiqs.messaging.client.webclient
 
 import com.cubetiqs.messaging.client.util.Loggable
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -18,7 +19,7 @@ object WebClientUtils : Loggable {
 
     @JvmStatic
     fun makeRequest(request: Request): Response {
-        log.debug("Web is make request to: {} with method: {}", request.url, request.method)
+        log.info("Web is make request to: {} with method: {}", request.url, request.method)
         val call = getClient().newCall(request)
         var response: Response? = null
         return try {
@@ -29,5 +30,21 @@ object WebClientUtils : Loggable {
         } finally {
             response?.close()
         }
+    }
+
+    @JvmStatic
+    fun postRequest(url: String, params: Map<String, String>): Response {
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+        params.forEach {
+            requestBody.addFormDataPart(it.key, it.value)
+        }
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody.build())
+            .build()
+
+        return makeRequest(request)
     }
 }
