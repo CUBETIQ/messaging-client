@@ -39,3 +39,14 @@ tasks.test {
 		events("passed", "skipped", "failed")
 	}
 }
+
+tasks {
+	val sourcesJar by creating(Jar::class) {
+		dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+		from(sourceSets["main"].allSource)
+	}
+
+	artifacts {
+		add("archives", sourcesJar)
+	}
+}
