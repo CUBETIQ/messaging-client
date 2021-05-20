@@ -22,8 +22,8 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class TelegramExampleKotlinTests {
-    private val token = TelegramConfig.POS_SYSTEM_ID
-    private val chatId = "-360594386"
+    private val token = TelegramConfig.getToken()
+    private val chatId = TelegramConfig.getReceiver()
 
     @Test
     fun sendMessage() {
