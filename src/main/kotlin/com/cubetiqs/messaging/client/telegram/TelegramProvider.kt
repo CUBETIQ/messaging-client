@@ -1,7 +1,7 @@
 package com.cubetiqs.messaging.client.telegram
 
 import com.cubetiqs.messaging.client.provider.MessageProvider
-import org.slf4j.LoggerFactory
+import com.cubetiqs.messaging.client.util.Loggable
 import kotlin.IllegalArgumentException
 
 /**
@@ -10,8 +10,7 @@ import kotlin.IllegalArgumentException
  * @author sombochea
  * @since 1.0
  */
-class TelegramProvider : MessageProvider {
-    private val log = LoggerFactory.getLogger(this::class.java)
+class TelegramProvider : MessageProvider, Loggable {
     private var _token: String = ""
     private var _chatId: String = ""
     private var _message: TelegramMessage? = null
@@ -32,7 +31,7 @@ class TelegramProvider : MessageProvider {
         this._token = token
     }
 
-    fun send(
+    private fun send(
         chatId: String,
         message: TelegramMessage,
     ): TelegramResponse? {

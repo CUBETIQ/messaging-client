@@ -1,12 +1,13 @@
 package com.cubetiqs.messaging.client.telegram
 
+import com.cubetiqs.messaging.client.util.Loggable
 import com.cubetiqs.messaging.client.webclient.WebClientUtils
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.nio.file.Files
 
-object TelegramBotUtils {
+object TelegramBotUtils : Loggable {
     private fun getBotUrl(endpoint: String, token: String = ""): String {
         return "${TelegramConfig.TELEGRAM_API}/bot${token.removePrefix("bot")}/${endpoint.removePrefix("/")}"
     }
@@ -14,12 +15,12 @@ object TelegramBotUtils {
     private fun makeRequest(
         request: Request,
     ): Response? {
-        println(javaClass.canonicalName + " => Start send message via telegram bot...")
+        log.debug("Start send message via telegram bot...")
         return try {
             WebClientUtils.makeRequest(request)
         } catch (ex: Exception) {
             ex.printStackTrace()
-            println("Make request error @${ex.message}")
+            log.error("Telegram make request error {}", ex.message)
             null
         }
     }
@@ -33,6 +34,8 @@ object TelegramBotUtils {
         // config prefix for custom token
         token: String = "",
     ): Any? {
+        validateTextAndChatId(text, chatId)
+
         val requestBody = MultipartBody.Builder()
             .addFormDataPart("text", text)
             .addFormDataPart("chat_id", chatId)
@@ -46,8 +49,13 @@ object TelegramBotUtils {
             .build()
 
         val result = makeRequest(request)
-        println(javaClass.canonicalName + " => Complete sent message to $chatId...")
+        log.debug("Telegram complete sent message to {}", chatId)
         return result
+    }
+
+    private fun validateTextAndChatId(text: String, chatId: String) {
+        if (text.isEmpty() || text.isBlank()) throw IllegalArgumentException("Message is required to send to receiver!")
+        if (chatId.isBlank() || chatId.isEmpty()) throw IllegalArgumentException("Chat ID is required to receive the message!")
     }
 
     @JvmStatic
@@ -63,6 +71,9 @@ object TelegramBotUtils {
         // config prefix for custom token
         token: String = "",
     ): Any? {
+        if (document.isEmpty()) throw IllegalArgumentException("Document is required to attach in message!")
+        if (chatId.isBlank() || chatId.isEmpty()) throw IllegalArgumentException("Chat ID is required to receive the message!")
+
         val ext = filename.split(".").lastOrNull() ?: "dat"
         val tempFile = Files.createTempFile(filename.removeSuffix(ext), ".$ext")
         Files.write(tempFile, document)
@@ -84,7 +95,7 @@ object TelegramBotUtils {
             .build()
 
         val result = makeRequest(request)
-        println(javaClass.canonicalName + " => Complete sent document to $chatId...")
+        log.debug("Telegram complete sent message to {}", chatId)
         return result
     }
 }

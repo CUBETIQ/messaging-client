@@ -6,7 +6,6 @@ object TelegramConfig {
     const val TELEGRAM_API = "https://api.telegram.org"
     const val SEND_DOCUMENT = "/sendDocument"
     const val SEND_MESSAGE = "/sendMessage"
-    const val POS_SYSTEM_ID = ""
     private const val CUBETIQ_TELEGRAM_TOKEN = "CUBETIQ_TELEGRAM_TOKEN"
     private const val CUBETIQ_TELEGRAM_RECEIVER = "CUBETIQ_TELEGRAM_RECEIVER"
 

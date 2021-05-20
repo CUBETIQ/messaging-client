@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("java")
+	`java-library`
 	kotlin("jvm") version "1.4.32"
 }
 
@@ -14,6 +14,8 @@ repositories {
 }
 
 dependencies {
+	implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+
 	implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -40,13 +42,15 @@ tasks.test {
 	}
 }
 
-tasks {
-	val sourcesJar by creating(Jar::class) {
-		dependsOn(JavaPlugin.CLASSES_TASK_NAME)
-		from(sourceSets["main"].allSource)
+tasks.withType<Jar> {
+	manifest {
+		attributes(mapOf("Implementation-Title" to project.name,
+			"Implementation-Version" to project.version))
 	}
 
-	artifacts {
-		add("archives", sourcesJar)
-	}
+	from(sourceSets.main.get().output)
+
+	from({
+		configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+	})
 }
