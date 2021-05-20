@@ -19,6 +19,10 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+	// logback driver and slf4j logging
+	implementation("ch.qos.logback:logback-core:1.3.0-alpha5")
+	implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
+
 	testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
 }
 

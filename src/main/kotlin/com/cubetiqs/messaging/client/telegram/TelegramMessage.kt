@@ -8,6 +8,7 @@ import java.io.Serializable
  * @author sombochea
  * @since 1.0
  */
-interface TelegramMessage : Serializable {
+@FunctionalInterface
+fun interface TelegramMessage : Serializable {
     fun getText(): String
 }

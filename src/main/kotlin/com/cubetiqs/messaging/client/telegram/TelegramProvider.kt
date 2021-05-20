@@ -1,7 +1,7 @@
 package com.cubetiqs.messaging.client.telegram
 
 import com.cubetiqs.messaging.client.provider.MessageProvider
-import com.sun.org.slf4j.internal.LoggerFactory
+import org.slf4j.LoggerFactory
 import kotlin.IllegalArgumentException
 
 /**
@@ -20,7 +20,11 @@ class TelegramProvider : MessageProvider {
         this._chatId = chatId
     }
 
-    fun messageToSend(message: TelegramMessage?) = apply {
+    fun setMessage(message: String) = apply {
+        this._message = TelegramMessage { message }
+    }
+
+    fun setMessageToSend(message: TelegramMessage?) = apply {
         this._message = message
     }
 
@@ -34,6 +38,10 @@ class TelegramProvider : MessageProvider {
     ): TelegramResponse? {
         if (_token.isEmpty() || _token.isBlank()) {
             throw IllegalArgumentException("token must be provide for send message!")
+        }
+
+        if (this._message == null) {
+            this._message = message
         }
 
         if (_message?.getText().isNullOrEmpty()) return null
@@ -77,7 +85,7 @@ class TelegramProvider : MessageProvider {
         fun sendMessage(token: String, chatId: String, text: String): Any? {
             return init(token)
                 .sendToChatId(chatId)
-                .messageToSend(TelegramChatMessage(text))
+                .setMessageToSend(TelegramChatMessage(text))
                 .send()
         }
     }
