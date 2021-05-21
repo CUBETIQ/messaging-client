@@ -77,9 +77,13 @@ class TelegramProvider : MessageProvider, Loggable {
                 )
             }
 
-            TelegramResponse(
-                response = response,
-            )
+            if (response != null) {
+                TelegramResponse(
+                    response = response,
+                )
+            } else {
+                null
+            }
         } catch (ex: Exception) {
             log.error("[Telegram] Message send error: ${ex.message}!")
             null
