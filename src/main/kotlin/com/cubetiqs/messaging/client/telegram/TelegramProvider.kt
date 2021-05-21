@@ -66,7 +66,7 @@ class TelegramProvider : MessageProvider, Loggable {
                     chatId = chatId,
                     token = this._token,
                     text = this._message?.getText() ?: "",
-                    filename = _filename ?: Date().time.toString(),
+                    filename = (_filename ?: _file?.name) ?: Date().time.toString(),
                     document = Files.readAllBytes(_file!!.toPath()),
                 )
             } else {
