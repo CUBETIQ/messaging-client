@@ -41,4 +41,19 @@ class TelegramExampleKotlinTests {
             text = text,
         )
     }
+
+    @Test
+    fun sendMessageProviderWithFile() {
+        val text = "Hello World from Provider with File"
+        val provider = TelegramProvider.init(
+            token
+        )
+
+        provider
+            .setFile(File("src/main/resources/cubetiq.png"))
+            .setFilename("cubetiq.png")
+            .setMessage(text)
+            .sendToChatId(chatId)
+            .send()
+    }
 }

@@ -25,7 +25,7 @@ object TwilioUtils : Loggable {
     // reset statistic for key of sms
     fun resetCounter(key: String) {
         if (limiters.containsKey(key)) {
-            limiters[key]!!.setRelease(0)
+            limiters[key]!!.set(0)
         }
     }
 
