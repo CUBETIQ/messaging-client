@@ -9,8 +9,13 @@ package com.cubetiqs.messaging.client.telegram
 open class TelegramDocument(
     val document: TelegramFileDocument? = null,
     private val text: String? = null,
+    private val parseMode: TelegramParseMode? = null,
 ) : TelegramMessage {
     override fun getText(): String {
         return text ?: ""
+    }
+
+    override fun getParseMode(): TelegramParseMode? {
+        return parseMode ?: TelegramParseMode.MARKDOWN
     }
 }

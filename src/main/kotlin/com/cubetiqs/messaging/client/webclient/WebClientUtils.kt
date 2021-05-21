@@ -11,7 +11,7 @@ object WebClientUtils : Loggable {
 
     private fun getClient(): OkHttpClient {
         if (this.webClient == null) {
-            this.webClient = OkHttpClient()
+            this.webClient = OkHttpClient.Builder().build()
         }
 
         return this.webClient!!

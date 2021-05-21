@@ -2,12 +2,13 @@ package com.cubetiqs.example
 
 import com.cubetiqs.messaging.client.telegram.TelegramBotUtils
 import com.cubetiqs.messaging.client.telegram.TelegramConfig
+import com.cubetiqs.messaging.client.telegram.TelegramParseMode
 import com.cubetiqs.messaging.client.telegram.TelegramProvider
 import org.junit.jupiter.api.Test
 import java.io.File
 
 class TelegramExampleKotlinTests {
-    private val token = TelegramConfig.getToken()
+    private val token = "1825551011:AAEJg4Y9JtmT4aiW7nz0xOxneyPdruTv8WQ" //TelegramConfig.getToken()
     private val chatId = TelegramConfig.getReceiver()
 
     @Test
@@ -53,6 +54,26 @@ class TelegramExampleKotlinTests {
             .setFile(File("src/main/resources/cubetiq.png"))
             .setFilename("cubetiq.png")
             .setMessage(text)
+            .sendToChatId(chatId)
+            .send()
+    }
+
+    @Test
+    fun sendMessageProviderWithParseModeHtml() {
+        val text = "<b>Hello World<b> from Provider with HTML parse mode!"
+        TelegramProvider.init(
+            token = token,
+        ).setMessage(text, TelegramParseMode.HTML)
+            .sendToChatId(chatId)
+            .send()
+    }
+
+    @Test
+    fun sendMessageProviderWithParseModeMarkdown() {
+        val text = "*Hello World* from Provider with MARKDOWN parse mode!"
+        TelegramProvider.init(
+            token = token,
+        ).setMessage(text, TelegramParseMode.MARKDOWN)
             .sendToChatId(chatId)
             .send()
     }

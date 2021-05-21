@@ -33,19 +33,23 @@ object TelegramBotUtils : Loggable {
         text: String,
         // config prefix for custom token
         token: String = "",
+        parseMode: TelegramParseMode? = null,
     ): Any? {
         validateTextAndChatId(text, chatId)
 
         val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
             .addFormDataPart("text", text)
             .addFormDataPart("chat_id", chatId)
-            .setType(MultipartBody.FORM)
-            .build()
+
+        if (parseMode != null) {
+            requestBody.addFormDataPart("parse_mode", parseMode.mode)
+        }
 
         val url = getBotUrl(TelegramConfig.SEND_MESSAGE, token)
         val request = Request.Builder()
             .url(url)
-            .post(requestBody)
+            .post(requestBody.build())
             .build()
 
         val result = makeRequest(request)
@@ -70,6 +74,7 @@ object TelegramBotUtils : Loggable {
         document: ByteArray,
         // config prefix for custom token
         token: String = "",
+        parseMode: TelegramParseMode? = null,
     ): Any? {
         if (document.isEmpty()) throw IllegalArgumentException("Document is required to attach in message!")
         if (chatId.isBlank() || chatId.isEmpty()) throw IllegalArgumentException("Chat ID is required to receive the message!")
@@ -86,12 +91,15 @@ object TelegramBotUtils : Loggable {
             .addFormDataPart("caption", text)
             .addFormDataPart("chat_id", chatId)
             .setType(MultipartBody.FORM)
-            .build()
+
+        if (parseMode != null) {
+            requestBody.addFormDataPart("parse_mode", parseMode.mode)
+        }
 
         val url = getBotUrl(TelegramConfig.SEND_DOCUMENT, token)
         val request = Request.Builder()
             .url(url)
-            .post(requestBody)
+            .post(requestBody.build())
             .build()
 
         val result = makeRequest(request)

@@ -24,8 +24,16 @@ class TelegramProvider : MessageProvider, Loggable {
         this._chatId = chatId
     }
 
-    fun setMessage(message: String) = apply {
-        this._message = TelegramMessage { message }
+    fun setMessage(message: String, parseMode: TelegramParseMode? = null) = apply {
+        this._message = object : TelegramMessage {
+            override fun getText(): String {
+                return message
+            }
+
+            override fun getParseMode(): TelegramParseMode? {
+                return parseMode
+            }
+        }
     }
 
     fun setMessageToSend(message: TelegramMessage?) = apply {
@@ -68,12 +76,14 @@ class TelegramProvider : MessageProvider, Loggable {
                     text = this._message?.getText() ?: "",
                     filename = (_filename ?: _file?.name) ?: Date().time.toString(),
                     document = Files.readAllBytes(_file!!.toPath()),
+                    parseMode = this._message!!.getParseMode(),
                 )
             } else {
                 TelegramBotUtils.sendMessage(
                     chatId = chatId,
                     token = this._token,
                     text = this._message!!.getText(),
+                    parseMode = this._message!!.getParseMode(),
                 )
             }
 

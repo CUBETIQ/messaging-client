@@ -8,8 +8,13 @@ package com.cubetiqs.messaging.client.telegram
  */
 open class TelegramChatMessage(
     private val text: String? = null,
+    private val parseMode: TelegramParseMode? = null,
 ) : TelegramMessage {
     override fun getText(): String {
         return text ?: ""
+    }
+
+    override fun getParseMode(): TelegramParseMode? {
+        return parseMode
     }
 }

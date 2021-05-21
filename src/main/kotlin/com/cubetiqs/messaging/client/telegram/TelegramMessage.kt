@@ -11,4 +11,7 @@ import java.io.Serializable
 @FunctionalInterface
 fun interface TelegramMessage : Serializable {
     fun getText(): String
+    fun getParseMode(): TelegramParseMode? {
+        return null
+    }
 }

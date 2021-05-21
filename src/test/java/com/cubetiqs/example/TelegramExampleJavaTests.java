@@ -19,7 +19,8 @@ public final class TelegramExampleJavaTests {
         TelegramBotUtils.sendMessage(
                 chatId,
                 text,
-                token
+                token,
+                null
         );
     }
 
@@ -32,7 +33,8 @@ public final class TelegramExampleJavaTests {
                 text,
                 "my paper.png",
                 Files.readAllBytes(file.toPath()),
-                token
+                token,
+                null
         );
     }
 
